@@ -1,0 +1,260 @@
+﻿.window{
+   position:absolute;visibility:visible;padding:0;
+
+   background:#ffffff;
+
+   -webkit-border-top-left-radius: 10px 10px;
+   -webkit-border-top-right-radius: 10px 10px;
+   -moz-border-radius-topleft: 10px 10px;
+   -moz-border-radius-topright: 10px 10px;
+   border-top-left-radius: 10px 10px;
+   border-top-right-radius: 10px 10px;
+
+   -moz-box-shadow: 0px 0px 15px 3px #444444; 
+   -webkit-box-shadow: 0px 0px 15px 3px #444444;
+   box-shadow:0px 0px 15px 3px #444444;
+}
+
+.window .title_inactive,
+.window .title{
+   position:absolute;
+   left: 10px; right:10px;
+   top:0px; height:24px;
+   width:auto;
+   padding:0 2px;
+   background-color:#717188;
+   background: -webkit-gradient(linear, left bottom, right bottom, from(#717188), to(#B4B4E6));
+   background: -moz-linear-gradient(0deg,#717188, #B4B4E6);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, startColorstr=#717188,endColorstr=#B4B4E6);
+   
+   font:bold 12px arial;
+   color:white;
+   line-height:24px;
+   cursor:move;
+}
+.window .title{
+   background-color:#000088;
+   background: -webkit-gradient(linear, left bottom, right bottom, from(#000088), to(#8888ff));
+   background: -moz-linear-gradient(180deg,#8888ff, #000088);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, startColorstr=#000088,endColorstr=#8888ff);
+}
+.window .spacerL,
+.window .spacerLInactive{
+   position:absolute;
+   top:0px; left:0px;
+   height:24px;width:10px;
+   background-color:#000088;
+
+   -webkit-border-top-left-radius: 6px 6px;
+   -moz-border-radius-topleft: 6px 6px;
+   border-top-left-radius: 6px 6px;
+}
+.window .spacerLInactive{
+   background-color:#717188;
+}      
+.window .spacerR,
+.window .spacerRInactive{
+   position:absolute;
+   top:0px; right:0px;
+   height:24px;width:10px;
+   background-color:#8888ff;
+
+   -webkit-border-top-right-radius: 6px 6px;
+   -moz-border-radius-topright: 6px 6px;
+   border-top-right-radius: 6px 6px;
+   cursor:pointer;
+}
+.window .spacerRInactive{background-color:#B4B4E6;}
+.window .btn_close,
+.window .btn_close_over{
+   position:absolute;
+   top:0px; right:8px;
+   height:17px;width:46px;
+   background:url(window.png) -53px 0 no-repeat;;
+   cursor:pointer;
+   border:1px solid #202E46;
+
+   -webkit-border-bottom-right-radius: 4px 4px;
+   -moz-border-radius-bottomright: 4px 4px;
+   border-bottom-right-radius: 4px 4px;
+}
+.window .btn_close_over{
+   background:url(window.png) -53px -17px no-repeat;;
+   box-shadow:0px 0px 10px 3px #D66857;
+   -moz-box-shadow: 0px 0px 10px 3px #D66857; /* Firefox */
+   -webkit-box-shadow: 0px 0px 10px 3px #D66857; /* Safari, Chrome */
+}
+.window .btn_maximize,
+.window .btn_maximize_over,
+.window .btn_maximizerestore,
+.window .btn_maximizerestore_over{
+   position:absolute;
+   top:0px; right:54px;
+   height:17px;width:27px;
+   background:url(window.png) -27px 0 no-repeat;
+   cursor:pointer;
+   border:1px solid #202E46;
+}
+.window .btn_maximize_over,
+.window .btn_maximizerestore_over{
+   background:url(window.png) -27px -17px no-repeat;
+   box-shadow:0px 0px 10px 3px #00ffff;
+   -moz-box-shadow: 0px 0px 10px 3px #00ffff; /* Firefox */
+   -webkit-box-shadow: 0px 0px 10px 3px #00ffff; /* Safari, Chrome */
+}
+
+.window .btn_maximizerestore{
+   background:url(window.png) -99px 0 no-repeat;
+}
+.window .btn_maximizerestore_over{
+   background:url(window.png) -99px -17px no-repeat;
+}
+   
+.window .btn_minimize,
+.window .btn_minimize_over,
+.window .btn_minimizerestore,
+.window .btn_minimizerestore_over{
+   position:absolute;
+   top:0px; right:81px;
+   height:17px;width:28px;
+   background:url(window.png) 0 0 no-repeat;;
+   cursor:pointer;
+   border:1px solid #202E46;
+   -webkit-border-bottom-left-radius: 4px 4px;
+   -moz-border-left-bottomright: 4px 4px;
+   border-bottom-left-radius: 4px 4px;
+}
+.window .btn_minimize_over,
+.window .btn_minimizerestore_over{
+   background:url(window.png) 0 -17px no-repeat;;
+   box-shadow:0px 0px 10px 3px #00ffff;
+   -moz-box-shadow: 0px 0px 10px 3px #00ffff; /* Firefox */
+   -webkit-box-shadow: 0px 0px 10px 3px #00ffff; /* Safari, Chrome */
+}
+.window .btn_minimizerestore{
+   right:80px;   
+   background:url(window.png) -99px 0 no-repeat;
+}
+.window .btn_minimizerestore_over{
+   right:80px;   
+   background:url(window.png) -99px -17px no-repeat;
+}
+
+
+.window .content_container,
+.window .content_container_dialog,
+.window .content_container_window{
+   position:absolute;
+   top:24px;left:0px;bottom:0px;right:0px;
+   
+   background: -webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#dddddd));
+   background: -moz-linear-gradient(#ffffff, #dddddd);
+   background: linear-gradient(#ffffff, #dddddd);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr=#ffffff,endColorstr=#dddddd);
+}
+.window .content_container_window{
+   background-color:#000088;
+   background: -webkit-gradient(linear, left bottom, right bottom, from(#000088), to(#8888ff));
+   background: -moz-linear-gradient(180deg,#8888ff, #000088);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, startColorstr=#000088,endColorstr=#8888ff);
+}
+
+
+.window .content_container_window.inactive{
+   background-color:#717188;
+   background: -webkit-gradient(linear, left bottom, right bottom, from(#717188), to(#B4B4E6));
+   background: -moz-linear-gradient(180deg,#B4B4E6, #717188);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, startColorstr=#717188,endColorstr=#B4B4E6);
+}
+
+.window .content_container .content,
+.window .content_container_dialog .content{
+   position:absolute;
+   top:0px;left:5px;bottom:5px;right:5px;
+   overflow:auto;
+   background:none;
+}
+
+.window .content_container_window .content{
+   position:absolute;
+   top:0px;left:5px;bottom:25px;right:5px;
+   overflow:auto;
+   background:none;
+}
+
+.window .content_container .content.loading,
+.window .content_container_dialog .content.loading,
+.window .content_container_window .content.loading{
+   background:url(loading_32.gif) center no-repeat;
+}
+
+
+.window .content_container_window .status_bar{
+   position:absolute;
+   left:5px;bottom:5px;right:5px;height:19px;
+   overflow:hidden;
+   border-top:1px solid #ffffff;
+   background:#D6D6D6;
+   font:11px tahoma;
+   line-height:19px;
+}
+
+.window .resize_indicator{
+   position:absolute;
+   width:5px;height:5px;
+   background:transparent;
+}
+.window .resize_indicator.top-left{
+   left:0px;top:0px; cursor: nw-resize;
+}   
+.window .resize_indicator.top-right{
+   
+   right:0px;top:0px;cursor: ne-resize;
+}   
+.window .resize_indicator.bottom-right{
+   
+   right:0px;bottom:0px;cursor: se-resize;
+}   
+.window .resize_indicator.bottom-left{
+   
+   left:0px;bottom:0px;cursor: sw-resize;
+}
+.window .resize_indicator.to-top{
+   left:5px;right:5px;top:0px;width:auto;
+   background:none;cursor: n-resize;
+}   
+.window .resize_indicator.to-bottom{
+   left:5px;right:5px;bottom:0px;width:auto;
+   background:none;cursor: s-resize;
+}   
+.window .resize_indicator.to-right{
+   top:5px;right:0px;bottom:5px;height:auto;
+   background:none;cursor: e-resize;
+}   
+.window .resize_indicator.to-left{
+   top:5px;left:0px;bottom:5px;height:auto;
+   background:none;cursor: w-resize;
+}   
+
+/**
+ * Plugin for windows status bar
+ */
+/* 
+.window .content_container_window .status_bar .progress_bar{width:100px;height:19px;top:0px;overflow:hidden;float:left;} 
+.window .content_container_window .status_bar .icon{position:relative;top:4px;width:16px;height:16px;float:left;}
+.window .content_container_window .status_bar .icon_coord{background:url(20x20.png)     -120px   -20px no-repeat;}
+.window .content_container_window .status_bar .icon_select{background:url(20x20.png)    -140px -20px no-repeat;}
+.window .content_container_window .status_bar .icon_dimension{background:url(20x20.png) -160px -20px no-repeat;}
+.window .content_container_window .status_bar .icon_disc{background:url(20x20.png)      -180px -20px no-repeat;}
+
+
+.status_seperator{position:relative;top:0px;right:0px;width:0px;height:19px;border-left:1px solid white;border-right:1px solid #cccccc;overflow:hidden;float:left;}
+.status_text{position:relative;left:24px;top:0px;width:122px;height:19px;font:11px arial;line-height:19px;}
+
+.window .content_container_window .status_bar .status_coord    {position:relative;width:60px;height:19px;top:0px;overflow:hidden;float:left;}
+.window .content_container_window .status_bar .status_select   {position:relative;width:60px;height:19px;top:0px;overflow:hidden;float:left;}
+.window .content_container_window .status_bar .status_dimension{position:relative;width:60px;height:19px;top:0px;overflow:hidden;float:left;}
+.window .content_container_window .status_bar .status_prompt   {position:absolute;left:158px;top:0px;right:0px;height:19px;font:11px arial;line-height:19px;background:url(progress.png) repeat-x;}
+.window .content_container_window .status_bar .status_prompt .progress_mask   {position:absolute;left:0px;top:0px;right:0px;bottom:0px;background:#D6D6D6;}
+.window .content_container_window .status_bar .status_prompt .progress_text   {position:absolute;left:5px;top:0px;right:0px;bottom:0px;background:transparent;text-align:left;font:bold 11px arial;color:#000000;line-height:19px;}
+*/

@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+	   <meta http-equiv="X-UA-Compatible" content="IE=9" />
+	   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>iPaint - An online painting program.</title>
+      <meta name="description" 
+            content="iPaint is an online painting program. It's developed using the new HTML5 canvas element. iPaint is essentially an online version of MS Paint program." />
+      <meta name="keywords" content="online painting program, canvas paint, html5, css3.0, javascript object oriented programming" />
+      <meta name="author" content="Yubo Dong" />
+
+      <link rel="stylesheet" type="text/css" href="style/iPaint.css" />      
+      <link rel="stylesheet" type="text/css" href="style/window.css" />      
+      
+		<style type="text/css">
+		   #toolbar_close.expand{background:url(style/collapse.png);cursor:pointer;}
+		   #toolbar_close.collapse{background:url(style/expand.png);cursor:pointer;}
+		</style>
+      <script type="text/javascript">
+      function EXTEND(cls,superCls){
+         cls.prototype = new superCls();
+         cls.prototype.constructor = cls;
+         cls.prototype.parent = superCls.prototype; 
+      }
+      </script>		
+        <!--
+            Change the google api key based on your domain so that you can search online image 
+            using google search engine.
+            
+            Added by Yubo on 9/21/2011
+        -->
+        <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAFdxLwjTbVerV8hz73P9GWRS2L7evLMGoPVmRVJJ45ieHtfHZTBQU0CUMZYOc7yhgnQdjoWC2VonO-A"></script>
+        <script type="text/javascript" src="src/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="src/jquery.getimagedata.js"></script>
+        <script type="text/javascript" src="colorPicker/jsColorPicker.js"></script>
+        <script type="text/javascript" src="src/dom-drag.js"></script>
+		<script type="text/javascript" src="src/iPaintApp.js"></script>
+		<script type="text/javascript" src="src/history.js"></script>
+		<script type="text/javascript" src="src/Shape.js"></script>
+		<script type="text/javascript" src="src/Trackable.js"></script>
+		<script type="text/javascript" src="src/brush.js"></script>
+		<script type="text/javascript" src="src/rectangle.js"></script>
+		<script type="text/javascript" src="src/window.js"></script>
+		<script type="text/javascript" src="src/ImageProcessor.js"></script>
+		<script type="text/javascript" src="src/sliderControl.js"></script>
+		<script type="text/javascript" src="src/main.js"></script>
+		
+
+      <script type="text/javascript">
+      /*
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-6883753-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      */
+      </script>
+		
+	</head>
+	<body>
+	   <div id="ipaint_frame">
+	      <div id="toolbar_close" class="expand"></div>
+	      <div id="tool_bar">
+	         <div id="tb_menu">
+	            <div class="btnicon new-image" title="Create new image"></div>
+	            <div class="btnicon save-image" title="Save image..."></div>
+	            <div class="btnicon email-image" title="Share image..."></div>
+	            <div class="btnicon clear-image" title="Clear image..."></div>
+	            <div class="btnicon image-gallery" title="Load gallery..."></div>
+	            <div class="btnicon image-url" title="Search online image..."></div>
+	            <div class="btnicon about" title="About iPaint..."></div>
+	            <div class="tb_title">Menu</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	      
+	         <div id="tb_canvas">
+	            
+	            <div id="canvas_bg_1">
+	               <div title="White canvas" name="white"  class="canvas_bg button_19x18 canvas_bg_white selected"></div>
+	               <div title="Gray canvas" name="gray"    class="canvas_bg button_19x18 canvas_bg_gray"></div>
+	               <div title="Black canvas" name="black"  class="canvas_bg button_19x18 canvas_bg_black"></div>
+	            </div>
+	            <div id="canvas_bg_2">
+	               <div title="Transparent canvas" name="transparent"  class="canvas_bg button_19x18 canvas_bg_transparent"></div>
+	               <div title="Background color canvas" name="background"  class="canvas_bg button_19x18 canvas_bg_background"></div>
+	            </div>
+	            <div class="tb_title">Background</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	         
+	         <div id="tb_tool">
+	            <div id="tools_1">
+	               <div title="Draw a free form line" name="pencil"  class="canvas_tool_shape button_19x18 tool_pencil selected"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Fill with color" name="bucket_solid"  class="canvas_tool_shape button_19x18 tool_bucket_solid" refer="bucket_selection"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Insert text" name="font"    class="canvas_tool_shape button_19x18 tool_font"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Erase part of the picture" name="eraser"  class="canvas_tool_shape button_19x18 tool_eraser"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Color picker" name="eye_dropper" class="canvas_tool_shape button_19x18 tool_eye_dropper"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Magnifier" name="zoom_glass" class="canvas_tool_shape button_19x18 tool_glasses"></div>
+	            </div>
+	            <div id="tools_2">
+	               <div title="Rectangular selection" name="select_box" class="canvas_tool_shape button_19x18 tool_select_box" refer="tools_selection"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Simple brush" name="simple_brush" class="canvas_tool_shape button_19x18 tool_brush_simple" refer="brush_selection"></div>
+	               <div class="tool_v_bar"></div>
+	               <!--
+	               <div title="Select all canvas" name="select_all" class="button_19x18 tool_select_all"></div>
+	               <div class="tool_v_bar"></div>
+	               -->
+	               <div title="Cut selection" name="cut" class="canvas_tool_shape button_19x18 tool_cut disabled"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Crop canvas" name="crop" class="canvas_tool_shape button_19x18 tool_crop disabled"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Resize" name="resize" class="canvas_tool_shape button_19x18 tool_resize disabled"></div>
+	               <div class="tool_v_bar"></div>
+	               <div title="Rotate" name="rotate" class="canvas_tool_shape button_19x18 tool_rotate disabled"></div>
+	            </div>
+	            <div class="tb_title">Tools</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	         
+	         <div id="tb_font" class="font_panel" style="display:none;width:0px;">
+               <select class="font_family" name="font_family">
+                  <option value="Arial">Arial</option>
+                  <option value="georgia">Georgia</option>
+                  <option value="verdana">Verdana</option>
+                  <option value="ms sans serif">MS Sans Serif</option>
+                </select>
+                <select class="font_size" name="font_size">
+                  <option value="8px">8 px</option>
+                  <option value="9px">9 px</option>
+                  <option value="10px">10 px</option>
+                  <option value="11px">11 px</option>
+                  <option value="12px">12 px</option>
+                  <option value="13px">13 px</option>
+                  <option value="14px">14 px</option>
+                  <option value="15px">15 px</option>
+                  <option value="16px">16 px</option>
+                  <option value="18px">18 px</option>
+                  <option value="20px">20 px</option>
+                  <option value="22px">22 px</option>
+                  <option value="24px">24 px</option>
+                  <option value="26px">26 px</option>
+                  <option value="28px">28 px</option>
+                  <option value="30px">30 px</option>
+                  <option value="36px">36 px</option>
+                  <option value="48px">48 px</option>
+                  <option value="72px">72 px</option>
+                </select>
+                <div class='font_options'>
+                  <div name="bold" title="Bold" class="font_option button_19x18 font_bold"></div>
+                  <div name="italic" title="Italic" class="font_option button_19x18 font_italic"></div>
+                  <!--
+                  <div name="underline" title="Underline" class="font_option button_19x18 font_underline"></div>
+                  <div name="strikethrough" title="Strikethrough" class="font_option button_19x18 font_strikethrough"></div>
+                  -->
+                </div>
+	            <div class="tb_title">Font</div>
+            </div>	            
+	         <div class="font_panel tb_v_bar" style="display:none;"></div>
+	         
+	         <div id="tb_shape">
+	            <div id="tb_shape_container">
+		            <div name="line"                        title="Line"                        class="canvas_tool_shape button_19x18 shape_line         "></div>
+		            <div name="curve"                       title="Curve"                       class="canvas_tool_shape button_19x18 shape_curve        "></div>
+		            <div name="oval"                        title="Oval"                        class="canvas_tool_shape button_19x18 shape_oval         "></div>
+		            <div name="rectangle"                   title="Rectangle"                   class="canvas_tool_shape button_19x18 shape_box          "></div>
+		            <div name="rounded_rectangle"           title="Rounded rectangle"           class="canvas_tool_shape button_19x18 shape_round_box    "></div>
+		            <div name="polyline"                    title="Polyline"                    class="canvas_tool_shape button_19x18 shape_polyline     "></div>
+		            <div name="polygon"                     title="Polygon"                     class="canvas_tool_shape button_19x18 shape_polygon      "></div>
+		            <div name="cardinal_spline"             title="Cardinal-spline"             class="canvas_tool_shape button_19x18 shape_cardinal_spline"></div>
+		            <div name="closed_cardinal_spline"      title="Closed cardinal-spline"      class="canvas_tool_shape button_19x18 shape_closed_cardinal_spline"></div>
+		            <div name="triangle"                    title="Triangle"                    class="canvas_tool_shape button_19x18 shape_triangle     "></div>
+		            <div name="diamond"                     title="Diamond"                     class="canvas_tool_shape button_19x18 shape_diamond      "></div>
+		            <div name="pentagon"                    title="Pentagon"                    class="canvas_tool_shape button_19x18 shape_pentagon     "></div>
+		            <div name="hexagon"                     title="Hexagon"                     class="canvas_tool_shape button_19x18 shape_hexagon      "></div>
+		            <div name="right_arrow"                 title="Right arrow"                 class="canvas_tool_shape button_19x18 shape_r_arrow      "></div>
+		            <div name="left_arrow"                  title="Left arrow"                  class="canvas_tool_shape button_19x18 shape_l_arrow      "></div>
+		            <div name="up_arrow"                    title="Up arrow"                    class="canvas_tool_shape button_19x18 shape_u_arrow      "></div>
+		            <div name="down_arrow"                  title="Down arrow"                  class="canvas_tool_shape button_19x18 shape_d_arrow      "></div>
+		            <div name="four_point_star"             title="Four-point star"             class="canvas_tool_shape button_19x18 shape_4_star       "></div>
+		            <div name="five_point_star"             title="Five-point star"             class="canvas_tool_shape button_19x18 shape_5_star       "></div>
+		            <div name="six_point_star"              title="Six-point star"              class="canvas_tool_shape button_19x18 shape_6_star       "></div>
+		            <div name="rounded_rectangular_callout" title="Rounded rectangular callout" class="canvas_tool_shape button_19x18 shape_baloon_box   "></div>
+		            <div name="heart"                       title="heart"                       class="canvas_tool_shape button_19x18 shape_heart"></div>
+		            <div name=""                            title=""                            class="canvas_tool_shape button_19x18 shape_baloon_shape "></div>
+	            </div>
+	            <div class="tb_shape_outline">
+	               <input type="checkbox" id="shape_with_outline" checked="true" /><label for="shape_with_outline" style="font:11px arial;">Outline</label>
+	            </div>
+	            <div class="tb_shape_fill">
+	               <input type="checkbox" id="shape_with_fill" checked="true" /><label for="shape_with_fill" style="font:11px arial;">Fill</label>
+	            </div>
+	            
+	            <div class="tb_title" style="width:auto;right:5px;text-align:right;">Shapes&nbsp;</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	         
+	         <div id="tb_size">
+	            <div class="line_width line-width selected" name="size_1px" title="1px" style="top: 5px;"><div class="size_1_px"></div></div>
+	            <div class="line_width line-width" name="size_3px" title="3px" style="top:16px;"><div class="size_3_px"></div></div>
+	            <div class="line_width line-width" name="size_5px" title="5px" style="top:27px;"><div class="size_5_px"></div></div>
+	            <div class="line_width line-width" name="size_8px" title="8px" style="top:38px;"><div class="size_8_px"></div></div>
+	            <input type="text" class="input_line_width" title="Customized line width" 
+	                   style="position:absolute;top:55px;text-align:center;left:8px;width:40px;height:12px;font:11px arial;" />
+	            <div class="tb_title">Size</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	         
+	         <div id="tb_color">
+	            <div class="swap_color"></div>
+               <div style="position:absolute;left:35px;top:10px;width:24px;height:24px;overflow:hidden;background:#ffffff;border:1px solid black;z-index:2;">
+                  <div id="fore_color" style="position:absolute;left:1px;top:1px;bottom:1px;right:1px;;overflow:hidden;background-color:#ff0000;cursor:pointer;"></div>
+               </div>
+               <div style="position:absolute;left:47px;top:20px;width:24px;height:24px;overflow:hidden;background:#ffffff;border:1px solid black;z-index:1;">
+                  <div id="back_color" style="position:absolute;left:1px;top:1px;bottom:1px;right:1px;;overflow:hidden;background-color:#0000cc;cursor:pointer;"></div>
+               </div>
+               
+               <div id="opacity_slider" class="opacity_selector slider_h">
+	               <div class='slider_bar'></div>
+	               <div class='slider_knob'></div>
+               </div>
+               
+	            <div class="tb_title">Colors &amp; Opacity</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	         
+	         <div id="tb_ruler">
+	            <div class="show_hide_ruler">
+	               <input type="checkbox" id="show_hide_ruler" checked="true" /><label for="show_hide_ruler">Rulers</label>
+	               <input type="checkbox" id="show_hide_grid" checked="true" /><label for="show_hide_grid">Gridlines</label><br />
+	               <label for="ruler_canvas_width"  style="width:40px;display:inline-block;">Width</label><input type="input" id="ruler_canvas_width" style="width:50px;font:11px arial;" /><br />
+	               <label for="ruler_canvas_height" style="width:40px;display:inline-block;">Height</label><input type="input" id="ruler_canvas_height" style="width:50px;font:11px arial;" /><br />
+	            </div>
+	            <div class="ruler_unit">
+	               <input type="radio" id="ruler_unit_px" name="ruler_unit" value="px" checked /><label for="ruler_unit_px">px</label><br />
+	               <input type="radio" id="ruler_unit_cm" name="ruler_unit" value="cm" /><label for="ruler_unit_cm">cm</label><br />
+	               <input type="radio" id="ruler_unit_in" name="ruler_unit" value="in" /><label for="ruler_unit_in">in</label>
+	            </div>
+	            <div class="tb_title">Ruler</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	         
+	         <div id="tb_comment">
+	            <div class="add_comment closed">
+	            </div>
+	            <div class="tb_title">Comments</div>
+	         </div>
+	         	         
+	         <div id="tb_twitter">
+	            <div class="following"></div>
+	            <div class="tb_title">Follow me</div>
+	         </div>
+	         
+	         <div id="tb_blog">
+	            <div class="myblog"></div>
+	            <div class="tb_title">My Blog</div>
+	         </div>
+	         <div class="tb_v_bar"></div>
+	         
+	      </div>
+	      
+	      <div id="canvas_container">
+	      </div>
+	      
+	      <div id="status_bar">
+	         <div class="status_coord">
+	            <div class="icon_24">
+	               <div class="icon_16 status_icon_coord" style="position:absolute;left:4px;top:4px"></div>
+	            </div>
+	            <div class="status_text"></div>
+	            <div class="status_seperator"></div>
+	         </div>
+
+	         <div class="status_select">
+	            <div class="icon_24">
+	               <div class="icon_16 status_icon_select" style="position:absolute;left:4px;top:4px"></div>
+	            </div>
+	            <div class="status_text"></div>
+	            <div class="status_seperator"></div>
+	         </div>
+
+	         <div class="status_dimension">
+	            <div class="icon_24">
+	               <div class="icon_16 status_icon_dimension" style="position:absolute;left:4px;top:4px"></div>
+	            </div>
+	            <div class="status_text"></div>
+	            <div class="status_seperator"></div>
+	         </div>
+
+	         <div class="status_prompt"></div>
+
+	      </div>
+	      
+	   </div>
+	   
+	   <div id="history">
+	      <div class="title">Undo / Redo</div>
+	      <div class="content"></div>
+	      <div class="toolbar">
+	         <div name="view"  class="tool view_history" title="View history in XML format"></div>
+	         <div name="undo"  class="tool undo" title="Undo"></div>
+	         <div name="redo"  class="tool redo" title="Redo"></div>
+	         <div name="remove" class="tool remove_entry" title="Remove current history entry"></div>
+	         <div name="clear" class="tool clear_history" title="Clear history"></div>
+	      </div>
+	   </div>
+	   
+	   <div id="dlg_mask" class="dialog_mask" style="visibility:hidden"></div>
+	   
+	   
+	   
+	   <div id="not_support_canvas" style="font:16px arial;height:140px;display:none;text-align:center;line-height:140px;color:Red;">
+	      Your browser doesn't support HTML5. You can download IE 9.0, Firefox or Google Chrome to view this site;
+	   </div>
+	   
+	   <div id="bucket_selection" class="referee" style="display:none;">
+         <div title="Fill with color"                    name="bucket_solid"          class="canvas_tool_shape button_19x18 tool_bucket_solid"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Fill with linear gradient color"    name="bucket_linear_grad"    class="canvas_tool_shape button_19x18 tool_bucket_linear_grad"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Fill with radial gradient color"    name="bucket_radial_grad"    class="canvas_tool_shape button_19x18 tool_bucket_radial_grad"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Fill with reflected gradient color" name="bucket_reflected_grad" class="canvas_tool_shape button_19x18 tool_bucket_reflected_grad"></div>
+         <!--
+         <div class="tool_v_bar"></div>
+         <div title="Fill with reflected diamond color"  name="bucket_diamond_grad"   class="button_19x18 tool_bucket_diamond_grad"></div>
+         -->
+	   </div>
+	   
+	   <div id="tools_selection" class="referee" style="display:none;">
+         <div title="Rectangular selection" name="select_box" class="canvas_tool_shape button_19x18 tool_select_box"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Polygon selection" name="select_polygon" class="canvas_tool_shape button_19x18 tool_select_poly"></div>
+         <!--
+         <div class="tool_v_bar"></div>
+         <div title="Polygon selection" name="select_polygon" class="button_19x18 tool_select_poly"></div>
+         -->
+	   </div>
+	   
+	   <div id="brush_selection" class="referee" style="display:none;">
+         <div title="Simple brush" name="simple_brush" class="canvas_tool_shape button_19x18 tool_brush_simple"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Ribbon brush" name="ribbon_brush" class="canvas_tool_shape button_19x18 tool_brush_ribbon"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Hair brush" name="hair_brush" class="canvas_tool_shape button_19x18 tool_brush_hair"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Long hair brush" name="long_hair_brush" class="canvas_tool_shape button_19x18 tool_brush_longhair"></div>
+         <div class="tool_v_bar"></div>
+         <div title="Square brush" name="square_brush" class="canvas_tool_shape button_19x18 tool_brush_square"></div>
+	   </div>
+	   
+	   <div style="display:none;background:#fff;position:absolute;right:0px;top:0px;width:200px;height:400px;border:1px solid black;overflow:auto;font:11px arial;z-index:2000;" id="debug_win"></div>
+	   <div id="comment_pane" style="display:none;">
+         <!-- Test data -->
+         <ul id="comment-list">
+            <li>
+               <div id="comment_form" name="comment_form" class="content" style="width:500px;"><form method="post">
+                  
+                  <fieldset>
+                     <legend class="title">Leave your comment here</legend>
+
+                     <div id="error" style="text-align:center;color:red;font:13px arial;height:16px;line-height:16px;"></div>
+                     <fieldset>
+                        <legend><span style='color:red;margin-right:5px;'>*</span>Your name:</legend>
+                        <input type="text" name="name" id="name" value="" style="width:300px"/>
+                     </fieldset>
+
+                     <fieldset>
+                        <legend><span style='color:red;margin-right:5px;'>*</span>Subject:</legend>
+                        <input type="text" name="subject" id="subject" value="" style="width:600px"/>
+                     </fieldset>
+                     
+                     <fieldset>
+                        <legend><span style='color:red;margin-right:5px;'>*</span>Message:</legend>
+                        <div style="vertical-align:top;">
+                           <textarea type="text" name="message" id="message" style="width:600px;height:120px;"></textarea>
+                        </div>
+                     </fieldset>
+                     
+                     <div style="text-align:right">
+                        <button class="dlg_btn_action_apply" onclick="submitMessage();return false;">Submit</button>&nbsp;&nbsp;&nbsp;
+                     </div>
+                  </fieldset>
+                  
+               </form></div>         
+            </li>
+         </ul>
+         <div class="close_button"></div>
+	   </div>
+	</body>
+</html>
+
+
+

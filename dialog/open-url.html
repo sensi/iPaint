@@ -1,0 +1,405 @@
+﻿<style>
+#image_search_result 
+.image_frame,
+#image_search_result 
+.image_frame.over,
+#image_search_result 
+.image_frame.select{
+   position:relative;
+   float:left;
+   margin:20px;
+   margin-right:0px;
+   margin-bottom:0px;
+   background:#ffffff;
+   border:2px solid rgba(0,0,0,0);
+   box-shadow:0px 0px 6px 3px #cccccc;
+   -moz-box-shadow: 0px 0px 6px 3px #cccccc; /* Firefox */
+   -webkit-box-shadow: 0px 0px 6px 3px #cccccc; /* Safari, Chrome */
+   cursor:pointer;
+}
+#image_search_result 
+.image_frame.over{
+   border:2px solid rgba(0,0,255,1);
+}
+.image_frame .image{
+   position:absolute;
+   background:#ffffff;
+   left:5px;top:5px;right:5px;bottom:40px;
+}
+.image_frame .image img{
+   position:absolute;
+}
+
+.image_frame .image_title{
+   position:absolute;
+   left:5px;right:5px;
+   bottom:20px;
+   height:20px;
+   font:bold 11px arial;
+   text-align:center;
+   line-height:20px;
+   text-overflow:ellipsis;
+   overflow:hidden;
+   background:#ffffff;
+   
+}
+.image_frame .image_res{
+   position:absolute;
+   font:11px arial;
+   left:5px;right:5px;
+   bottom:5px;height:15px;
+   line-height:15px;
+   text-align:center;
+   background:#ffffff;
+}
+#image_search_paging .page,
+#image_search_paging .page.over,
+#image_search_paging .page.current{
+   margin:5px 1px;
+   height:22px;width:22px;
+   border:1px solid #cccccc;
+   font:bold 12px arial;
+   text-align:center;
+   line-height:22px;
+   background:#ffffff;
+   float:left;
+   cursor:pointer;
+}
+#image_search_paging .page.over{
+   background: -webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#dddddd));
+   background: -moz-linear-gradient(#ffffff, #dddddd);
+   background: linear-gradient(#ffffff, #dddddd);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr=#ffffff,endColorstr=#dddddd);
+}
+#image_search_paging .page.current{
+   background: -webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#c48000));
+   background: -moz-linear-gradient(#ffffff, #c48000);
+   background: linear-gradient(#ffffff, #c48000);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr=#ffffff,endColorstr=#c48000);
+}
+</style>
+<script type="text/javascript">
+var g_googleEngine = null;
+var sDefault = "Enter url to open or enter text to search online";
+var dialog = {
+   open :function(win,app){
+            var dlg = this;
+            this.window = win;
+            this.app = app;
+            
+            $("#URL").val(sDefault)
+               .bind("focus",function(){
+                                     if ( $.trim(this.value) === sDefault ){
+                                        this.value = "";
+                                     }else{
+                                        $(this).select();
+                                     }
+                                  })
+               .bind("blur",function(){
+                                     if ( $.trim(this.value) === "" ){
+                                        this.value = sDefault;
+                                     }
+                                  })
+               .bind("keydown",function(event){
+                                     var val = $.trim(this.value);
+                                     
+                                     if ( event.keyCode === 13 ){ //enter
+                                        if ( isUrl(val) ){
+                                           dlg.openURL(val);
+                                        }else{ 
+                                           dlg.searchWeb(val);
+                                        }
+                                        event.stopPropagation();  
+                                        return false;
+                                     }
+                                  });
+
+            $("#frm_file_open_url").find("[name=\"BtnOpen\"]")
+               .bind("click",
+                  function(){
+                     var str = $.trim($("#URL").val());
+                     if ( str === "" || str == sDefault ){
+                        alert("Please enter a valid url");
+                        return;
+                     }
+                     dlg.openURL(str);
+                  
+                  });
+            $("#frm_file_open_url").find("[name=\"BtnGoogle\"]")
+               .bind("click",
+                  function(){
+                     var str = $.trim($("#URL").val());
+                     if ( str === "" || str == sDefault ){
+                        alert("Please enter your text to search online");
+                        return;
+                     }
+                  
+                     if ( !g_googleEngine ){
+                        initGoogleSearch();
+                     }
+                     dlg.initSearch(function(){googleSearch();});
+                  });
+               
+         },
+   searchWeb:function(s){
+      if ( $.trim(s) !== "" ) {
+         if ( !g_googleEngine ){
+            initGoogleSearch();
+         }
+         this.initSearch(function(){googleSearch();});
+      }
+   },
+   openURL:function(s){
+      var s = $.trim(s);
+      if ( s === "" || s === sDefault || !isUrl(s) ) {
+         alert("Please enter a valid URL");
+      }else{
+         this.window.close(); 
+         this.app.open(s,true);
+      }
+   },
+   initSearch:function(fn){
+            var dlg = this;
+            $("#frm_file_open_url").find("[name=\"online-search\"]")
+               .each(
+                  function(){
+                     if ( this.style.display === "none" ){
+                        var deltaW = $(window).width() - dlg.window.width() - 10;
+                        var deltaH = $(window).height() - dlg.window.height() - 10;
+                        if ( deltaW > 400 ){
+                           deltaW = 400;
+                        }
+                        if ( deltaH > 400 ){
+                           deltaH = 400;
+                        }
+                        dlg.window.sizeTo(deltaW,deltaH,fn);
+                        this.style.display = "";
+                     }else{
+                        fn();
+                     }
+                  }
+               );
+         },
+   close:function(){
+         } 
+};
+
+function  initGoogleSearch(){
+   g_googleEngine = new google.search.ImageSearch();
+   g_googleEngine.setResultSetSize(8);
+   g_googleEngine.setSearchCompleteCallback(this, searchComplete, null);
+}
+
+function searchComplete(){
+   // Check that we got results
+   if (g_googleEngine.results && g_googleEngine.results.length > 0) {
+
+      // Grab our content div, clear it.
+      var contentDiv = document.getElementById('image_search_result');
+      contentDiv.innerHTML = '';
+
+      // Loop through our results, printing them to the page.
+      var results = g_googleEngine.results;
+      //////////results = TEST_RESULT;
+      for (var i = 0; i < results.length; i++) {
+         // For each result write it's title and image to the screen
+         var result = results[i];
+         var imgContainer = document.createElement('div');
+         imgContainer.className = "image_frame";
+         $(imgContainer).css({width:IMG_FRAME_W + "px",height:IMG_FRAME_H + "px"});
+         imgContainer.title = result.titleNoFormatting + " (Source: " + result.url + ")";
+         $(imgContainer).data("url",result.url);
+         
+         var divImg = document.createElement("div");
+         divImg.className = "image";
+
+         var title = document.createElement("div");
+         title.className = "image_title";
+         title.innerHTML = result.title;
+
+         var res = document.createElement("div");
+         res.className = "image_res";
+         res.innerHTML = result.width + " x " + result.height;
+         
+         imgContainer.appendChild(divImg);
+         imgContainer.appendChild(title);
+         imgContainer.appendChild(res);
+
+         // Put our title + image in the content
+         contentDiv.appendChild(imgContainer);
+         
+         var w = $(divImg).width(),h = $(divImg).height();
+         var ret = fit_image(result.tbWidth,result.tbHeight,w,h);
+         
+         var img = document.createElement("img");
+         divImg.appendChild(img);
+         $(img).css({
+               left  : ret.left + "px",
+               top   : ret.top + "px",
+               width : ret.width + "px",
+               height: ret.height + "px"
+            }).attr("src",result.tbUrl);
+      }
+      $("#image_search_result .image_frame")
+         .bind("mouseover",
+            function(){
+               $(this).addClass("over");
+            })
+         .bind("mouseout",
+            function(){
+               $(this).removeClass("over");
+            })
+         .bind("click",
+            function(){
+               dialog.window.close(); 
+               var url = $(this).data("url");
+               dialog.app.open(url);
+            });
+
+      // Now add links to additional pages of search results.
+      addPaginationLinks(g_googleEngine);
+   }
+}             
+
+function addPaginationLinks() {
+
+   // To paginate search results, use the cursor function.
+   var cursor = g_googleEngine.cursor;
+   var curPage = cursor.currentPageIndex; // check what page the app is on
+   var pagesDiv = document.getElementById('image_search_paging');
+   pagesDiv.innerHTML = "";
+   for (var i = 0; i < cursor.pages.length; i++) {
+      var page = cursor.pages[i];
+      var pageDiv = $("<div class='page'></div>").html(page.label).data("index",i);
+      if (curPage == i) { 
+         pageDiv.addClass("current");
+      }
+      $(pagesDiv).append(pageDiv);
+   }
+   $("#image_search_paging .page")
+      .bind("mouseover",
+         function(){
+            if (!$(this).hasClass("current") ){
+               $(this).addClass("over");
+            }
+         })
+      .bind("mouseout",
+         function(){
+            if (!$(this).hasClass("current") ){
+               $(this).removeClass("over");
+            }
+         })
+      .bind("click",
+         function(){
+            if (!$(this).hasClass("current") ){
+               var index = $(this).data("index");
+               g_googleEngine.gotoPage(index);
+            }
+         });
+}
+
+function googleSearch(){
+   var str = $.trim($("#URL").val());
+   if ( str === "" || str == sDefault ){
+      return;
+   }
+   getImageFrameSize(4);
+   var form = document.getElementById("frm_file_open_url");
+   var size = form["search_image_size"];
+   var v = 0;
+   for ( var i = 0; i < size.length; i ++ ){
+      if ( size[i].checked ){
+         v = size[i].value;
+         break;
+      }
+   }
+   
+   var restric;
+   switch(v){
+   case "1": restric = google.search.ImageSearch.IMAGESIZE_SMALL;break;
+   case "2": restric = google.search.ImageSearch.IMAGESIZE_MEDIUM;break;
+   case "3": restric = google.search.ImageSearch.IMAGESIZE_LARGE;break;
+   case "4": restric = google.search.ImageSearch.IMAGESIZE_EXTRA_LARGE;break;
+   default:restric = google.search.ImageSearch.IMAGESIZE_SMALL |
+                     google.search.ImageSearch.IMAGESIZE_MEDIUM |
+                     google.search.ImageSearch.IMAGESIZE_LARGE |
+                     google.search.ImageSearch.IMAGESIZE_EXTRA_LARGE;break; 
+   }
+   g_googleEngine.setRestriction(google.search.ImageSearch.RESTRICT_IMAGESIZE,restric);
+   
+   g_googleEngine.execute(str);
+}
+var IMG_FRAME_W = 0;
+var IMG_FRAME_H = 0;
+function getImageFrameSize(n){
+   var w = $("#image_search_result").width() - (n+1) * 25,
+       h = $("#image_search_result").height() - 60;
+
+   var iw = Math.floor(w / n);
+   if ( iw < 40 ){
+      if ( n > 1 ){
+         return getImageFrameSize(n-1);
+      }
+   }
+   
+   IMG_FRAME_W = iw; 
+   IMG_FRAME_H = h / 2;
+}
+
+function fit_image(src_w, src_h, dest_w, dest_h) {
+   // calculate the position when we put the src box inside center of the dest box.
+   var dst_ratio = dest_w / dest_h;
+   var src_ratio = src_w / src_h;
+
+   var left, top, width, height;
+
+   if (dst_ratio > src_ratio) {
+      height = Math.min(src_h, dest_h);
+      width = Math.round(height * src_ratio);
+   } else {
+      width = Math.min(src_w, dest_w);
+      height = Math.round(width / src_ratio);
+   }
+   left = Math.round((dest_w - width) / 2);
+   top = Math.round((dest_h - height) / 2);
+
+   return {
+      left: left,
+      top: top,
+      width: width,
+      height: height
+   };
+}
+
+function isUrl(s) {
+	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+	return regexp.test(s);
+}
+</script>
+
+
+<form name="frm_file_open_url" id="frm_file_open_url" method="post" style="margin:0;padding:0;">
+   <div style="position:relative;top:5px;height:30px;text-align:center;overflow:hidden;">
+      <input type="text" name="URL" id="URL" style="width:360px;" value="" />
+   </div>
+   <div style="position:relative;text-align:center;margin-top:5px;height:30px;overflow:hidden;">
+      <button type="button" name="BtnOpen">Open</button>
+      <button type="button" name="BtnCancel">Close</button>
+      <button type="button" name="BtnGoogle" title="Search online images!">Search</button>
+   </div>
+   <div name="online-search" style="position:absolute;top:65px;bottom:5px;right:5px;left:5px;display:none;border:1px solid #eeeeee;border-bottom:none;">
+      <div style="position:relative;top:0px;height:24px;text-align:center;">
+         <input type="radio" name="search_image_size" value="0" checked /><label>Any Size</label>
+         <input type="radio" name="search_image_size" value="1" /><label>Small Size</label>
+         <input type="radio" name="search_image_size" value="2" /><label>Medium Size</label>
+         <input type="radio" name="search_image_size" value="3" /><label>Large Size</label>
+         <input type="radio" name="search_image_size" value="4" /><label>Extra Large Size</label>
+      </div>
+      <div id="image_search_result" style="position:absolute;left:0px;right:0px;top:26px;bottom:32px;background:#ffffff;overflow:auto;"></div>
+      <div style="position:absolute;left:0px;right:0px;height:32px;bottom:0px;background:#dddddd;overflow:auto;">
+         <center>
+            <div id="image_search_paging" style="width:220px;"></div>
+         </center>
+      </div>
+   </div>
+</form>

@@ -1,0 +1,282 @@
+﻿<style>
+#image_search_result 
+.image_frame,
+#image_search_result 
+.image_frame.over,
+#image_search_result 
+.image_frame.select{
+   position:relative;
+   float:left;
+   margin:20px;
+   margin-right:0px;
+   margin-bottom:0px;
+   background:#ffffff;
+   border:2px solid rgba(0,0,0,0);
+   box-shadow:0px 0px 6px 3px #cccccc;
+   -moz-box-shadow: 0px 0px 6px 3px #cccccc; /* Firefox */
+   -webkit-box-shadow: 0px 0px 6px 3px #cccccc; /* Safari, Chrome */
+   cursor:pointer;
+}
+#image_search_result 
+.image_frame.over{
+   border:2px solid rgba(0,0,255,1);
+}
+.image_frame .image{
+   position:absolute;
+   background:#ffffff;
+   left:5px;top:5px;right:5px;bottom:40px;
+}
+.image_frame .image img{
+   position:absolute;
+}
+
+.image_frame .image_title{
+   position:absolute;
+   left:5px;right:5px;
+   bottom:20px;
+   height:20px;
+   font:bold 11px arial;
+   text-align:center;
+   line-height:20px;
+   text-overflow:ellipsis;
+   overflow:hidden;
+   background:#ffffff;
+   
+}
+.image_frame .image_res{
+   position:absolute;
+   font:11px arial;
+   left:5px;right:5px;
+   bottom:5px;height:15px;
+   line-height:15px;
+   text-align:center;
+   background:#ffffff;
+}
+#image_search_paging .page,
+#image_search_paging .page.over,
+#image_search_paging .page.current{
+   margin:5px 1px;
+   height:22px;width:22px;
+   border:1px solid #cccccc;
+   font:bold 12px arial;
+   text-align:center;
+   line-height:22px;
+   background:#ffffff;
+   float:left;
+   cursor:pointer;
+}
+#image_search_paging .page.over{
+   background: -webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#dddddd));
+   background: -moz-linear-gradient(#ffffff, #dddddd);
+   background: linear-gradient(#ffffff, #dddddd);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr=#ffffff,endColorstr=#dddddd);
+}
+#image_search_paging .page.current{
+   background: -webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#c48000));
+   background: -moz-linear-gradient(#ffffff, #c48000);
+   background: linear-gradient(#ffffff, #c48000);
+   filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr=#ffffff,endColorstr=#c48000);
+}
+</style>
+<script type="text/javascript">
+
+//var G_TEST = {"status":0,"domain":"http://www.jswidget.com/user_data/","user":"guest","images":[{"url":"122-172-0-231_Untitled.png","date":"03/18/2011 08:44","width":1032,"height":455},{"url":"190-25-211-14_852963.png","date":"03/17/2011 17:24","width":600,"height":400},{"url":"190-25-211-14_Untitled.png","date":"03/17/2011 17:23","width":600,"height":400},{"url":"141-11-244-1_Untitled.png","date":"03/17/2011 08:11","width":600,"height":400},{"url":"113-109-112-87_test.jpg","date":"03/16/2011 22:00","width":600,"height":400},{"url":"212-99-41-88_Untitled.png","date":"03/16/2011 05:54","width":600,"height":400},{"url":"202-127-16-2_Untitled.png","date":"03/15/2011 23:22","width":600,"height":400},{"url":"63-87-170-71_owen_car.png","date":"03/15/2011 18:01","width":832,"height":400},{"url":"187-19-72-29_MCQQCOISA.jpg","date":"03/15/2011 16:30","width":600,"height":400},{"url":"209-68-70-162_interwebs.png","date":"03/15/2011 13:53","width":600,"height":400},{"url":"193-185-135-162_Untitled.png","date":"03/15/2011 08:58","width":600,"height":400},{"url":"195-69-193-12_Untitled.jpg","date":"03/15/2011 07:25","width":600,"height":400},{"url":"89-179-244-52_Untitled.jpg","date":"03/15/2011 07:15","width":955,"height":669},{"url":"116-68-116-208_Untitled.png","date":"03/15/2011 02:38","width":600,"height":400},{"url":"222-235-208-2_Untitled.jpg","date":"03/15/2011 02:30","width":600,"height":400},{"url":"178-111-149-118_Untitled.png","date":"03/14/2011 21:35","width":600,"height":400},{"url":"117-207-198-168_Untitled.png","date":"03/14/2011 16:00","width":600,"height":400},{"url":"115-75-30-93_Untitled.png","date":"03/14/2011 14:31","width":600,"height":400},{"url":"80-13-138-26_Untitled.png","date":"03/14/2011 10:47","width":600,"height":400},{"url":"189-104-134-247_owen_car.png","date":"03/14/2011 10:13","width":832,"height":400},{"url":"200-29-183-158_myipaint.png","date":"03/14/2011 08:14","width":600,"height":400},{"url":"188-121-0-12_Untitled.png","date":"03/13/2011 19:27","width":600,"height":400},{"url":"121-237-163-42_Untitled.png","date":"03/13/2011 10:58","width":600,"height":400},{"url":"59-101-20-160_asdasdasd.jpg","date":"03/13/2011 07:00","width":1276,"height":604},{"url":"59-101-20-160_Untitled.jpg","date":"03/13/2011 07:00","width":1276,"height":604},{"url":"59-101-20-160_Untitled.png","date":"03/13/2011 07:00","width":1276,"height":604},{"url":"201-35-156-115_Untitled.png","date":"03/13/2011 03:42","width":1282,"height":641},{"url":"118-218-198-86_Untitled.png","date":"03/11/2011 21:59","width":772,"height":474},{"url":"94-122-217-134_Untitled.png","date":"03/11/2011 18:41","width":600,"height":400},{"url":"183-26-12-204_Untitled.jpg","date":"03/11/2011 10:54","width":600,"height":400},{"url":"61-129-103-82_Uddddddddddddddntitled.jpg","date":"03/11/2011 04:46","width":600,"height":400},{"url":"61-129-103-82_Untitled.jpg","date":"03/11/2011 04:45","width":600,"height":400},{"url":"189-18-35-117_Teste.png","date":"03/10/2011 21:00","width":600,"height":400},{"url":"203-5-217-3_Untitled.png","date":"03/10/2011 19:27","width":600,"height":433},{"url":"80-224-89-109_Untitled.png","date":"03/10/2011 18:26","width":600,"height":400},{"url":"87-173-82-65_lol.png","date":"03/10/2011 17:41","width":1202,"height":454},{"url":"41-230-245-209_Untitled.png","date":"03/10/2011 17:29","width":600,"height":400},{"url":"111-95-135-28_test1.png","date":"03/10/2011 15:48","width":600,"height":400},{"url":"200-39-8-121_Untitled.png","date":"03/10/2011 15:41","width":600,"height":400},{"url":"139-173-54-11_Untitled.png","date":"03/10/2011 14:58","width":600,"height":400},{"url":"90-195-176-89_Untitled.png","date":"03/10/2011 12:30","width":1500,"height":578},{"url":"85-3-36-76_Untitled.png","date":"03/10/2011 09:25","width":1183,"height":608},{"url":"200-134-81-19_Untitled.jpg","date":"03/10/2011 07:31","width":600,"height":400},{"url":"195-182-33-4_Untitled.jpg","date":"03/10/2011 06:40","width":829,"height":520},{"url":"94-180-158-39_Untitled.png","date":"03/10/2011 01:42","width":600,"height":400},{"url":"155-33-121-230_Untitled.png","date":"03/09/2011 20:24","width":600,"height":400},{"url":"62-14-248-36_Untitled.png","date":"03/09/2011 17:15","width":600,"height":400},{"url":"92-233-240-39_PARTY.png","date":"03/09/2011 14:26","width":1472,"height":649},{"url":"70-52-220-44_Bubba's Revenge.jpg","date":"03/09/2011 12:43","width":600,"height":400},{"url":"198-151-13-7_test.jpg","date":"03/09/2011 11:48","width":600,"height":400},{"url":"62-233-183-220_c_Untitled.png","date":"03/09/2011 07:53","width":963,"height":537},{"url":"62-233-183-220_Untitled.png","date":"03/09/2011 07:53","width":963,"height":537},{"url":"61-124-226-11_Untitled.png","date":"03/09/2011 07:44","width":600,"height":400},{"url":"202-59-231-35_pingPong.png","date":"03/09/2011 04:48","width":600,"height":400},{"url":"61-246-241-3_Untitled.jpg","date":"03/09/2011 03:30","width":600,"height":400},{"url":"210-90-31-75_hih.jpg","date":"03/09/2011 03:15","width":600,"height":400},{"url":"118-208-95-234_Untitled.png","date":"03/09/2011 03:15","width":1500,"height":578},{"url":"210-90-31-75_test.jpg","date":"03/09/2011 03:15","width":600,"height":400},{"url":"125-19-237-18_Untitled.png","date":"03/08/2011 23:04","width":600,"height":400},{"url":"94-183-133-86_Untitled.jpg","date":"03/08/2011 20:02","width":686,"height":522},{"url":"72-240-122-27_Untitled.png","date":"03/08/2011 15:48","width":600,"height":400},{"url":"93-103-131-214_Untitled.png","date":"02/28/2011 07:19","width":805,"height":494},{"url":"189-155-96-129_Untitled.png","date":"02/24/2011 12:19","width":600,"height":400},{"url":"92-140-216-15_Untitled.jpg","date":"02/22/2011 13:12","width":600,"height":400},{"url":"72-240-212-190_Untitled.png","date":"02/15/2011 17:12","width":600,"height":400},{"url":"210-148-59-13_Untitled.png","date":"02/10/2011 05:38","width":600,"height":400},{"url":"173-181-38-93_Untitled.png","date":"02/03/2011 12:29","width":600,"height":400},{"url":"180-180-123-250_Untitled.jpg","date":"02/03/2011 08:57","width":600,"height":400},{"url":"195-158-15-114_Untitled.png","date":"02/03/2011 02:19","width":600,"height":400},{"url":"117-242-196-141_hh.png","date":"01/27/2011 04:26","width":962,"height":491},{"url":"89-101-132-18_ph.png","date":"01/17/2011 12:38","width":600,"height":400},{"url":"117-242-196-135_225.png","date":"01/14/2011 05:04","width":956,"height":553},{"url":"76-111-9-84_Untitled.jpg","date":"01/13/2011 21:36","width":600,"height":400},{"url":"76-111-9-84_Untitled.png","date":"01/13/2011 21:36","width":600,"height":400},{"url":"74-81-254-12_Untitled.png","date":"01/03/2011 22:43","width":600,"height":400},{"url":"83-86-85-240_Untitled.png","date":"01/03/2011 18:36","width":600,"height":400},{"url":"58-187-77-60_Untitled.png","date":"01/03/2011 06:07","width":600,"height":400},{"url":"76-211-84-40_Untitled.png","date":"01/01/2011 16:07","width":600,"height":400},{"url":"59-96-132-114_Untitled.png","date":"12/10/2010 07:32","width":600,"height":400},{"url":"78-105-155-225_Untitled.png","date":"11/24/2010 17:05","width":600,"height":400},{"url":"75-38-218-40_try.png","date":"11/18/2010 20:09","width":600,"height":400},{"url":"209-254-239-130_treasure.png","date":"11/09/2010 13:20","width":845,"height":576},{"url":"209-254-239-130_crazy.png","date":"11/09/2010 12:19","width":768,"height":557},{"url":"really cool stuff.png","date":"11/08/2010 10:54","width":600,"height":400},{"url":"209-254-239-130_owen_car.png","date":"11/05/2010 20:04","width":832,"height":400}]};
+
+var dialog = {
+   open :function(win,app){
+            var dlg     = this;
+            this.app    = app;
+            this.window = win;
+            
+            $("#frm_file_open_gallery").find("[name=\"BtnRefresh\"]")
+               .bind("click",
+                  function(){
+                     dlg.loadGallery(null,function(results){dlg.showGallery(results);});
+                  });
+                          
+            this.initSearch(function(){dlg.loadGallery(null,function(results){dlg.showGallery(results);});});
+         },
+   initSearch:function(fn){
+            var dlg = this;
+            $("#frm_file_open_gallery").find("[name=\"online-search\"]")
+               .each(
+                  function(){
+                     if ( this.style.display === "none" ){
+                        var deltaW = $(window).width() - dlg.window.width() - 10;
+                        var deltaH = $(window).height() - dlg.window.height() - 10;
+                        
+                        if ( deltaW > 400 ){
+                           deltaW = 400;
+                        }
+                        if ( deltaH > 400 ){
+                           deltaH = 400;
+                        }
+                        
+                        dlg.window.sizeTo(deltaW,deltaH,fn);
+                        this.style.display = "";
+                     }else{
+                        fn();
+                     }
+                  }
+               );
+         },
+   loadGallery:function(sUser,fnOK){
+         getImageFrameSize(4);
+         if ( !sUser ){
+            sUser = "guest";
+         }
+         $.ajax({
+            url:"./loadImage.php",
+            data:{user:sUser},
+            dataType:"json",
+            type:"POST",
+            cache:false,
+            success:function(data,textStatus){
+               if ( data ){
+               
+                  if ( data.status == 0 ){
+                     if ( fnOK ){
+                        fnOK(data);
+                     }
+                  }
+               }
+            },
+            error:function(s){
+               alert(s);
+            }
+         });
+      },
+   showGallery:function(results){
+         // Check that we got results
+         var dlg = this;
+            var domain = results.domain;
+            var user = results.user;
+            // Grab our content div, clear it.
+            var contentDiv = document.getElementById('image_search_result');
+            contentDiv.innerHTML = '';
+
+            for (var i = 0; i < results.images.length; i++) {
+               // For each result write it's title and image to the screen
+               var result = results.images[i];
+               
+               var file = result.url.split("_");
+               file = file[file.length-1];
+               
+               var imgContainer = document.createElement('div');
+               imgContainer.className = "image_frame";
+               $(imgContainer).css({width:IMG_FRAME_W + "px",height:IMG_FRAME_H + "px"});
+               $(imgContainer).data("url",domain + user + "/" + result.url);
+               
+               var divImg = document.createElement("div");
+               divImg.className = "image";
+
+               var title = document.createElement("div");
+               title.className = "image_title";
+               title.innerHTML = file;
+
+               var res = document.createElement("div");
+               res.className = "image_res";
+               res.innerHTML = result.date + " (" + result.width + "x" + result.height + ")";
+               
+               imgContainer.appendChild(divImg);
+               imgContainer.appendChild(title);
+               imgContainer.appendChild(res);
+
+               // Put our title + image in the content
+               contentDiv.appendChild(imgContainer);
+               
+               var w = $(divImg).width(),h = $(divImg).height();
+               var ret = fit_image(result.width,result.height,w,h);
+               
+               var img = document.createElement("img");
+               divImg.appendChild(img);
+               $(img).css({
+                     left  : ret.left + "px",
+                     top   : ret.top + "px",
+                     width : ret.width + "px",
+                     height: ret.height + "px",
+                     background:"url(style/loading_16.gif) center no-repeat"
+                  })
+                  .attr("src",domain + user + "/" + result.url)
+                  .bind("load",
+                     function(){
+                        this.style.background = "none";
+                     });
+            }
+            $("#image_search_result .image_frame")
+               .bind("mouseover",
+                  function(){
+                     $(this).addClass("over");
+                  })
+               .bind("mouseout",
+                  function(){
+                     $(this).removeClass("over");
+                  })
+               .bind("click",
+                  function(){
+                     var url = $(this).data("url");
+                     dlg.window.close();
+                     
+                     dlg.app.open(url);
+                  });
+      },
+         
+   close:function(){
+         } 
+};
+
+var IMG_FRAME_W = 0;
+var IMG_FRAME_H = 0;
+function getImageFrameSize(n){
+   var w = $("#image_search_result").width() - (n+1) * 25,
+       h = $("#image_search_result").height() - 60;
+
+   var iw = Math.floor(w / n);
+   if ( iw < 40 ){
+      if ( n > 1 ){
+         return getImageFrameSize(n-1);
+      }
+   }
+   
+   IMG_FRAME_W = iw; 
+   IMG_FRAME_H = h / 2;
+}
+
+function fit_image(src_w, src_h, dest_w, dest_h) {
+   // calculate the position when we put the src box inside center of the dest box.
+   var dst_ratio = dest_w / dest_h;
+   var src_ratio = src_w / src_h;
+
+   var left, top, width, height;
+
+   if (dst_ratio > src_ratio) {
+      height = Math.min(src_h, dest_h);
+      width = Math.round(height * src_ratio);
+   } else {
+      width = Math.min(src_w, dest_w);
+      height = Math.round(width / src_ratio);
+   }
+   left = Math.round((dest_w - width) / 2);
+   top = Math.round((dest_h - height) / 2);
+
+   return {
+      left: left,
+      top: top,
+      width: width,
+      height: height
+   };
+}
+
+
+</script>
+
+
+<form name="frm_file_open_gallery" id="frm_file_open_gallery" method="post" style="margin:0;padding:0;">
+   <div style="position:relative;text-align:center;margin-top:5px;height:30px;overflow:hidden;">
+      <button type="button" name="BtnRefresh">Refresh</button>
+      <button type="button" name="BtnCancel">Close</button>
+   </div>
+   <div name="online-search" style="position:absolute;top:35px;bottom:5px;right:5px;left:5px;display:none;border:1px solid #eeeeee;border-bottom:none;">
+      <div id="image_search_result" style="position:absolute;left:0px;right:0px;top:0px;bottom:0px;background:#ffffff;overflow:auto;"></div>
+   </div>
+</form>

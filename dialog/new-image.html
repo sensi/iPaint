@@ -1,0 +1,60 @@
+﻿<form name="frm_new_img" method="post">
+   <div class="h_sep"></div>
+   <fieldset>
+      <legend>Name Your Image:</legend>
+      <div>
+         <label class="field">Name:</label>
+         <input type="text" name="image_name" id="image_name" value="" style="width:140px"/>
+      </div>
+   </fieldset>
+
+   <div class="h_sep"></div>
+
+   <fieldset>
+      <legend>Image Size:</legend>
+      <div>
+         <label class="field">Width:</label>
+         <input type="text" name="image_width" id="image_width" style="width:40px"/>
+         <select name="image_unit_w" class="image_unit">
+            <option value="px">Pixels</option>
+            <option value="cm">Centimeters</option>
+            <option value="in">Inches</option>
+         </select>
+      </div>
+      <div>
+         <label class="field">Height:</label>
+         <input type="text" name="image_height" id="image_height" style="width:40px"/>
+         <select name="image_unit_h" class="image_unit">
+            <option value="px">Pixels</option>
+            <option value="cm">Centimeters</option>
+            <option value="in">Inches</option>
+         </select>
+      </div>
+      <div>
+         <label class="field">Resolution:</label>
+         <input type="text" name="image_resolution" id="Text1"  style="width:40px"/>
+         <label>DPI</label>
+      </div>
+   </fieldset>
+
+   <div class="h_sep"></div>
+   	            
+   <fieldset style="text-align:left;">
+      <legend>Image Background:</legend>
+      <div style="text-align:center;">
+         <input type="radio" name="image_bg" id="image_bg_1" value="white"/>
+         <label for="image_bg_1">White</label>
+         <input type="radio" name="image_bg" id="image_bg_2" value="background" />
+         <label for="image_bg_2">Background Color</label>
+         <input type="radio" name="image_bg" id="image_bg_3" value="transparent" />
+         <label for="image_bg_3">Transparent</label>
+      </div>
+   </fieldset>
+
+   <div class="h_sep"></div>
+
+   <div style="text-align:center">
+      <button name="BtnOK" style="width:80px;">OK</button>
+      <button name="BtnCancel" style="width:80px;">Cancel</button>
+   </div>
+</form>

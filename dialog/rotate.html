@@ -1,0 +1,77 @@
+﻿<script type="text/javascript">
+var dialog = {
+   init:function(obj){
+      $("#frm_rotate input[name=rotate][value=90]").attr("checked",true);
+      this.degree = 0;
+      this.applied = false;
+   },
+   apply:function(obj){
+      this.applied = true;
+      var v = $("#frm_rotate input[name=rotate]:checked").val();
+      if ( obj.type == "shape" ){
+         obj.myContext.context.clearRect(0,0,obj.paintApp.width,obj.paintApp.height);
+         if ( !isNaN(v) ){
+            obj.shape
+            .rotate(v*1)
+            .draw(obj.myContext);
+         }else if ( v == "flip_h" ){
+            obj.shape
+            .flip_h()
+            .draw(obj.myContext);
+         }else if ( v == "flip_v" ){
+            obj.shape
+            .flip_v()
+            .draw(obj.myContext);
+         }
+      }else if ( obj.type == "selection" ){
+         if ( !isNaN(v) ){
+            obj.shape
+            .select(obj.paintApp.canvas_draft,true)
+            .rotate(v*1)
+            .draw(obj.myContext,true);
+         }
+      }
+
+      obj.showFocusRing(null);
+      return false;
+   }
+};
+</script>
+<form name="frm_rotate" id="frm_rotate" method="post">
+   <div class="h_sep"></div>
+   <fieldset>
+      <legend>Rotate</legend>
+      <div style="margin-left:40px;height:auto;">
+      <div>
+         <input type="radio" name="rotate" id="rotate_1" value="90" checked/>
+         <label for="rotate_1" class="field" style="text-align:left">Rotate right 90&deg;</label>
+      </div>   
+      <div>
+         <input type="radio" name="rotate" id="rotate_2" value="-90" />
+         <label for="rotate_2" class="field" style="text-align:left">Rotate left 90&deg;</label>
+      </div>   
+      <div>
+         <input type="radio" name="rotate" id="rotate_3" value="180" />
+         <label for="rotate_3" class="field" style="text-align:left">Rotate 180&deg;</label>
+      </div>   
+      <div>
+         <input type="radio" name="rotate" id="rotate_4" value="flip_v" />
+         <label for="rotate_4" class="field" style="text-align:left">Flip vertical</label>
+      </div>   
+      <div>
+         <input type="radio" name="rotate" id="rotate_5" value="flip_h" />
+         <label for="rotate_5" class="field" style="text-align:left">Flip horizontal</label>
+      </div>
+      </div>
+   </fieldset>
+
+   <div class="h_sep"></div>
+
+   <div style="text-align:right">
+      
+      <button name="BtnApply">Apply</button>&nbsp;&nbsp;&nbsp;
+      <button name="BtnOK">OK</button>
+      <button name="BtnCancel">Close</button>
+   </div>
+   	            
+</form>

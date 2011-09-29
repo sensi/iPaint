@@ -1,0 +1,52 @@
+﻿<script type="text/javascript">
+var dialog = {
+   init:function(){
+      $("[name='image_format']").bind("click",
+         function(){
+            var ext = $(this).val();
+            var file = $("#image_file").val();
+            if ( file.indexOf(".") === -1 ){
+               file += "." + ext;
+            }else{
+               var arr = file.split(".");
+               arr[arr.length-1] = ext;
+               file = arr.join(".");
+            }
+            $("#image_file").val(file);
+         });
+      
+   }
+};
+</script>
+<form name="frm_save_img" method="post">
+   <div class="h_sep"></div>
+   <fieldset>
+      <legend>Image Name:</legend>
+      <div>
+         <label class="field">File name:</label>
+         <input type="text" name="image_file" id="image_file" value="" style="width:160px"/>
+      </div>
+   </fieldset>
+
+   <div class="h_sep"></div>
+
+   <fieldset style="text-align:center;">
+      <legend>Image Format:</legend>
+      <div>
+         <input type="radio" name="image_format" id="image_png" value="png"/>
+         <label for="image_png">PNG</label>
+         <input type="radio" name="image_format" id="image_jpg" value="jpg" />
+         <label for="image_jpg">JPEG</label>
+         <input type="radio" name="image_format" id="image_bmp" value="bmp" />
+         <label for="image_bmp">BMP</label>
+      </div>
+      
+   </fieldset>
+
+   <div class="h_sep"></div>
+
+   <div style="text-align:center">
+      <button name="BtnOK" style="width:80px;">Save</button>
+      <button name="BtnCancel" style="width:80px;">Cancel</button>
+   </div>
+</form>

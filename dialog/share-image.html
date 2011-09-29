@@ -1,0 +1,91 @@
+﻿<script type="text/javascript">
+var dialog = {
+   init:function(){
+      $("#email_list").select().focus();
+   },
+   validate:function(){
+      var sEmail   = $.trim($("textarea[name=email_list]").val());
+      if ( sEmail == "" ){
+          $("textarea[name=email_list]").val("").focus().select();
+          $("#frm_share_img_err").html("Please enter emails.");
+          return false;
+      }
+      var arrEmail = this.check_email_list(sEmail);
+      if ( arrEmail.length === 0 ){
+         $("#frm_share_img_err").html("Invaid email");
+         return false;
+      }
+
+      var sSender = $.trim($("input[name=sender_name]").val());
+      if ( sSender == "" ){
+         $("#frm_share_img_err").html("Please enter your name.");
+         $("input[name=sender_name]").focus();
+         return false;
+      }
+      var sMsg    = $.trim($("textarea[name=email_body]").val());
+      return arrEmail;
+   },
+   check_email_list:function(sList){
+      var arrEmail = sList.split(",");
+      if ( arrEmail.length == 1 ){
+         arrEmail = sList.split(";");
+      }
+      var arr = [];
+      for ( var i = 0; i < arrEmail.length; i ++ ){
+         var sEmail = $.trim(arrEmail[i]);
+         if ( sEmail === "" ){
+            continue;
+         }
+         if ( this.isEmail(sEmail)){
+            arr.push(sEmail);
+         }
+      }
+      return arr;
+   },
+   isEmail:function(email){
+      if ( !email ){return false;}
+        
+      var exclude=/[^@\-\.\w]|^[_@\.\-]|[\._\-]{2}|[@\.]{2}|(@)[^@]*\1/;
+      var check=/@[\w\-]+\./;
+      var checkend=/\.[a-zA-Z]{2,3}$/;
+
+      if(((email.search(exclude) != -1)||
+          (email.search(check)) == -1)||
+          (email.search(checkend) == -1))
+	      return false;
+      else 
+	      return true;
+   }
+};
+</script>
+<form name="frm_share_img" method="post">
+	            
+   <div id="frm_share_img_err" style="font:11px arial;height:12px;left:2px;right:2px;text-align:center;color:Red;line-height:12px;"></div>
+
+   <fieldset>
+      <legend>Share-to list:<small style="color:#888888;"> (Seperate emails using comma [,])</small></legend>
+      <div style="height:30px;vertical-align:top;">
+         <textarea type="text" name="email_list" id="email_list" style="width:275px;height:20px;"></textarea>
+      </div>
+   </fieldset>
+
+   <div class="h_sep"></div>
+
+   <fieldset>
+      <legend>Your name:</legend>
+      <input type="text" name="sender_name" id="sender_name" value="" style="width:275px"/>
+   </fieldset>
+
+   <fieldset>
+      <legend>Message:</legend>
+      <div style="height:80px;vertical-align:top;">
+         <textarea type="text" name="email_body" id="email_body" style="width:275px;height:70px;"></textarea>
+      </div>
+   </fieldset>
+   
+   <div style="text-align:center">
+      <button name="BtnOK" style="width:80px;">Share</button>
+      <button name="BtnCancel" style="width:80px;">Cancel</button>
+   </div>
+	            
+</form>

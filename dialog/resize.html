@@ -1,0 +1,125 @@
+﻿<script type="text/javascript">
+var dialog = {
+   init:function(obj){
+         this.org_attr = {
+                         width:Math.round(obj.shape.width()),
+                         height:Math.round(obj.shape.height())
+                        };
+         this.applied = false;
+         var dlg = this;
+         $("#frm_resize input[name=resize_by][value=per]").attr("checked",true);
+         $("#frm_resize input[name=resize_by]").unbind()
+         .bind("click",
+            function(){
+               var v = $("#frm_resize input[name=resize_by]:checked").val()
+               if ( v == "per" ){
+                  $("#frm_resize input[name=resize_v]").val(100);
+                  $("#frm_resize input[name=resize_h]").val(100);
+               }else{
+                  $("#frm_resize input[name=resize_v]").val(dlg.org_attr.height);
+                  $("#frm_resize input[name=resize_h]").val(dlg.org_attr.width);
+               }
+            }
+         );
+         
+         $("#frm_resize input[name=resize_h]").val(100).unbind()
+         .bind("keyup",
+            function(){
+               if ( $("#frm_resize input[name=resize_ratio]").attr("checked") ){
+                  if ( $("#frm_resize input[name=resize_by]:checked").val() == "per" ){
+                     $("#frm_resize input[name=resize_v]").val($(this).val())
+                  }else{
+                     var r = dlg.org_attr.width / dlg.org_attr.height;
+                     $("#frm_resize input[name=resize_v]").val(Math.round($(this).val()*1/r))
+                  }
+               }
+            }
+         );
+         
+         $("#frm_resize input[name=resize_v]").val(100).unbind()
+         .bind("keyup",
+            function(){
+               if ( $("#frm_resize input[name=resize_ratio]").attr("checked") ){
+                  if ( $("#frm_resize input[name=resize_by]:checked").val() == "per" ){
+                     $("#frm_resize input[name=resize_h]").val($(this).val())
+                  }else{
+                     var r = dlg.org_attr.height / dlg.org_attr.width;
+                     $("#frm_resize input[name=resize_v]").val(Math.round($(this).val()*1/r))
+                  }
+               }
+            }
+         );
+         
+         $("#frm_resize input[name=resize_ratio]").attr("checked",true);
+   },
+   apply:function(obj){
+         this.applied = true;
+         
+         var v = $("#frm_resize input[name=resize_by]:checked").val();
+         var h_r, v_r;
+         if ( v == "per" ){
+            h_r = parseInt($("#frm_resize input[name=resize_h]").val())/100.0;
+            v_r = parseInt($("#frm_resize input[name=resize_v]").val())/100.0;
+         }else{
+            h_r = parseInt($("#frm_resize input[name=resize_h]").val()) / this.org_attr.width;
+            v_r = parseInt($("#frm_resize input[name=resize_v]").val()) / this.org_attr.height;
+         }
+         
+         obj.myContext.context.clearRect(0,0,obj.paintApp.width,obj.paintApp.height);
+         
+         obj.shape
+            .scale(h_r,v_r)
+            .draw(obj.myContext);
+         
+         if ( obj.type == "selection" ){
+            obj.transforming(obj.shape);
+         }
+         
+         obj.showFocusRing(null);
+         this.org_attr = {
+                      width:Math.round(obj.shape.width()),
+                      height:Math.round(obj.shape.height())
+                     };
+         
+   }
+};
+</script>
+<form name="frm_resize" id="frm_resize" method="post">
+   <div class="h_sep"></div>
+   <fieldset>
+      <legend>Resize</legend>
+      <div style="text-align:center">
+         <label class="field">By:</label>
+         <input type="radio" name="resize_by" id="resize_by_per" value="per" checked/>
+         <label for="resize_by_per">Percentage</label>
+         <input type="radio" name="resize_by" id="resize_by_px" value="px" />
+         <label for="resize_by_px">Pixels</label>
+      </div>
+
+      <div style="text-align:center">
+         <label class="field">Horizontal:</label>
+         <input type="text" name="resize_h" id="resize_h" value="100" style="width:40px"/>
+      </div>
+
+      <div style="text-align:center">
+         <label class="field">Vertical:</label>
+         <input type="text" name="resize_v" id="resize_v" value="100" style="width:40px"/>
+      </div>
+
+      <div style="text-align:center">
+         <input type="checkbox" name="resize_ratio" id="resize_ratio" checked/>
+         <label for="resize_ratio">Maintain aspect ratio</label>
+      </div>
+      
+   </fieldset>
+
+   <div class="h_sep"></div>
+
+   <div style="text-align:right">
+      
+      <button name="BtnApply">Apply</button>&nbsp;&nbsp;&nbsp;
+      <button name="BtnOK">OK</button>
+      <button name="BtnCancel">Close</button>
+   </div>
+	            
+</form>
