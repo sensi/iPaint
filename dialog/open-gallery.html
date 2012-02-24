@@ -126,7 +126,7 @@ var dialog = {
             sUser = "guest";
          }
          $.ajax({
-            url:"./loadImage.php",
+            url:"/bundles/m3ipaint/iPaint/loadImage.php",
             data:{user:sUser},
             dataType:"json",
             type:"POST",
@@ -195,7 +195,7 @@ var dialog = {
                      top   : ret.top + "px",
                      width : ret.width + "px",
                      height: ret.height + "px",
-                     background:"url(style/loading_16.gif) center no-repeat"
+                     background:"url(/bundles/m3ipaint/iPaint/style/loading_16.gif) center no-repeat"
                   })
                   .attr("src",domain + user + "/" + result.url)
                   .bind("load",

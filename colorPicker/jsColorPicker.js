@@ -225,7 +225,7 @@ jsColorPicker.prototype.createColorPicker = function () {
 
     var _this = this;
 
-    var imgBase = 'colorPicker';
+    var imgBase = '/bundles/m3ipaint/iPaint/colorPicker';
 
     this.cp = this.$DOM(['DIV',
     {

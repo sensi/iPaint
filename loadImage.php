@@ -3,12 +3,13 @@ if ( !isAjax() ){
    echo '{"status":-2,"reason":"Invalid request"}';
 }else{
    $user       = $_POST["user"];
-
-   $dir = realpath('.') . '/user_data/' . $user . "/";
+   $domain = $_SERVER["host"];
+   $webPath = "https://" . $domain . "/drawings/";
+   $dir = __DIR__ . '/../../../drawings/' . $user . '/'; 
 
    if ( is_dir($dir) ){
       $files = scandir_by_mtime($dir);
-      echo '{"status":0,"domain":"http://test.jswidget.com/user_data/","user":"' . $user .'","images":[';
+      echo '{"status":0,"domain":"$webPath","user":"' . $user .'","images":[';
       $index = 0;
 
       foreach($files as $key=>$sub_file){

@@ -1179,7 +1179,7 @@ iPaintApp.prototype.save = function(sFilename,sFormat,sUserID,fnOK){
       user:sUserID
    };   
    $.ajax({
-      url:"./save_image.php",
+      url:"/bundles/m3ipaint/iPaint/save_image.php",
       data:ajaxData,
       dataType:"json",
       type:"POST",
@@ -2022,7 +2022,7 @@ iPaintApp.prototype.openNewImageDialog = function(w,h){
    var app = this;
    return new jsWindow(this.winMgr)
       .createDialog("new_image","New Image ...",350,310)
-      .load("dialog/new-image.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/new-image.html",
             function(jWin,sHTML){
                var oFormInitValue = 
                               {
@@ -2055,7 +2055,7 @@ iPaintApp.prototype.openSaveImageDialog = function(){
    var app = this;
    return new jsWindow(this.winMgr)
       .createDialog("save_image","Save Image ...",310,190)
-      .load("dialog/save-image.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/save-image.html",
             function(jWin,sHTML){
                var oFormInitValue = 
                               {
@@ -2096,7 +2096,7 @@ iPaintApp.prototype.openShareImageDialog = function(){
    var app = this;
    return new jsWindow(this.winMgr)
       .createDialog("share_image","Share Image ...",310,300)
-      .load("dialog/share-image.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/share-image.html",
             function(jWin,sHTML){
                var oFormInitValue = 
                               {
@@ -2136,7 +2136,7 @@ iPaintApp.prototype.openURLDialog = function(){
    var app = this;
    new jsWindow(this.winMgr)
       .createDialog("openurl","Open URL",420,100)
-      .load("dialog/open-url.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/open-url.html",
             function(jWin,sHTML){
                
                var oFormInitValue = 
@@ -2163,7 +2163,7 @@ iPaintApp.prototype.openGalleryDialog = function(){
    var app = this;
    new jsWindow(this.winMgr)
       .createDialog("open_gallery","iPaint Gallery",420,100)
-      .load("dialog/open-gallery.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/open-gallery.html",
             function(jWin,sHTML){
                
                var oFormInitValue = 
@@ -2193,7 +2193,7 @@ iPaintApp.prototype.openResizeDialog = function(){
    var app = this;
    return new jsWindow(this.winMgr)
       .createDialog("resize_image","Resize Image ...",310,190)
-      .load("dialog/resize.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/resize.html",
             function(jWin,sHTML){
                var oFormInitValue = 
                               {
@@ -2223,7 +2223,7 @@ iPaintApp.prototype.openRotateDialog = function(){
    var app = this;
    return new jsWindow(this.winMgr)
       .createDialog("rotate_image","Rotate Image ...",310,230)
-      .load("dialog/rotate.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/rotate.html",
             function(jWin,sHTML){
                var oFormInitValue = 
                               {
@@ -2251,7 +2251,7 @@ iPaintApp.prototype.openAboutDialog = function(){
    var app = this;
    new jsWindow(this.winMgr)
       .createDialog("open_gallery","iPaint Gallery",340,220)
-      .load("dialog/about-ipaint.html",
+      .load("/bundles/m3ipaint/iPaint/dialog/about-ipaint.html",
             function(jWin,sHTML){
             }
       );
